@@ -98,7 +98,6 @@ $(function () {
 	describe('Inital entries', function () {
 
 		var feedContainer = $('.feed');
-		var entriesNumber = feedContainer.children().length;
 
 		// make sure loadFeed loads fully. In other words, that feed entries are loaded
 		beforeEach(function (done) {
@@ -106,24 +105,74 @@ $(function () {
 				done();
 			})
 		})
-		/* TODO: Write a test that ensures - when the loadFeed
+
+		/* This test ensures - when the loadFeed
 		 * function is called and completes its work - that there is at least
 		 * a single .entry element within the .feed container.
 		 * Remember, loadFeed() is asynchronous so this test will require
 		 * the use of Jasmine's beforeEach and asynchronous done() function.
 		 */
 		it('have at least a single entry', function (done) {
-			expect(entriesNumber > 0).toBe(true);
+			expect(feedContainer.children.length > 0).toBe(true);
+			done();
 		})
 	})
 
 
 	describe('New Feed Selection', function () {
 
-		/* TODO: Write a test that ensures - when a new feed is loaded
+		var defaultFeedEntry;
+		var newFeedEntry;
+
+		/* This test ensures - when a new feed is loaded
 		 * by the loadFeed function - that the content actually changes.
 		 * Remember, loadFeed() is asynchronous.
 		 */
+
+		beforeEach(function (done) {
+
+			// Load default feed 
+			loadFeed(0, function () {
+				// Makes sure new feed is done loading
+				done();
+				// Store first entry url of this feed
+				defaultFeedEntry = $('.feed').find('a').attr('href');
+			})
+
+			// Load new feed 
+			loadFeed(1, function () {
+				// Makes sure new feed is done loading
+				done();
+				// Store first entry url of this feed
+				newFeedEntry = $('.feed').find('a').attr('href');
+			})
+
+		})
+
+
+		/* We can safely say that content changed
+		 * if the first entry link of the default feed (Udacity)
+		 * and the one of the new feed (CSS tricks in this case)
+		 * are different.
+		 * Before this spec, I simulated a change of feeds
+		 * (loaded default feed first (Udacity Blog), then a new one (CSS Tricks).
+		 * Here, I use a timeout to make sure loadFeed(0) and loadFeed(1)
+		 * are done loading, hence that defaultFeedEntry and newFeedEntry 
+		 * stored their respective href string successfully
+		 * As a manual test, I used a fake allFeeds[] (you can find it commented in js/app.js)
+		 * where feeds are all the same (Udacity Blog).
+		 * When I use this one, test fails because first entries have the same href.
+		 */
+		it('should change the content', function (done) {
+
+			setTimeout(function () {
+
+				expect(defaultFeedEntry === newFeedEntry).toBe(false);
+				done();
+
+			}, 500);
+
+		})
 	})
 
 }());

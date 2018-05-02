@@ -23,6 +23,26 @@ var allFeeds = [
     }
 ];
 
+// Fake allFeeds[] used to test that content actually changes when new feed is selected
+/* var allFeeds = [
+	{
+		name: 'Udacity Blog',
+		url: 'http://blog.udacity.com/feed'
+    },
+	{
+		name: 'Udacity Blog',
+		url: 'http://blog.udacity.com/feed'
+    },
+	{
+		name: 'Udacity Blog',
+		url: 'http://blog.udacity.com/feed'
+    },
+	{
+		name: 'Udacity Blog',
+		url: 'http://blog.udacity.com/feed'
+	}
+]; */
+
 
 /* This function starts up our application. The Google Feed
  * Reader API is loaded asynchonously and will then call this
@@ -53,7 +73,6 @@ function loadFeed(id, cb) {
 		}),
 		contentType: "application/json",
 		success: function (result, status) {
-			console.log(result);
 			var container = $('.feed'),
 				title = $('.header-title'),
 				entries = result.feed.entries,
