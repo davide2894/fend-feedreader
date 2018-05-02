@@ -5,7 +5,7 @@ This is a project to learn unit testing by practice.
 
 We are given a feedreader app that uses Google API and allows the user to choose among 4 feed to read (Udaciy Blog, CSS Tricks, HTML5 Rocks, Linear Digression).
 
-There are 21 tasks to complete: you can find them in [TODO.md](/TODO.md?raw=true)
+There are 21 tasks to complete: you can find them in [TODO.md](https://github.com/davide2894/fend-feedreader/blob/master/TODO.md)
 
 The goal is to complete all taks by using [Jasmine](http://jasmine.github.io) - an intuitive, JavaScript testing library.
 
