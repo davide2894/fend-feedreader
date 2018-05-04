@@ -12,3 +12,23 @@ Could this work? Sounds too complicated for me.
 
 9:47am - too complicated indeed. I should have been simpler. In fact, with element.click() I can simulate a click. This must be inlcuded in the spec too. In fact, in the test clicks must be performed, and at clicks we should run our expectation. Now works.
 
+***
+
+# Day 3 - Wed 2/5/18
+5:55am - need to test that - when a new feed is loaded by the loadFeed(id, cb) function - the content (I presume inside `div class="feed"`) actually changes.
+
+This is a test, so I need to simulate the change of feed to load. Then, test that content changes. 
+
+For the load of a new feed, I can load feed with id 1 (CSS tricks) and test if container.empty(); is exectued. 
+
+8:40am - changed approach. To test if content changed, I can check the first entry's href strings. If the one obtained after loading feed 0 (Udacity Blog) is different than the one obtained after loading feed 1 (CSS tricks), it is safe to say content changed. 
+Problem: href strings are stored only when both feeds are done loading, but printing happens before said loading. 
+...
+Solved by wrapping spec in a timeout. This ensures vars store href strings after feeds finish loading.
+
+***
+
+# Day 4 - Thu 3/5/18
+6:49am - review received. Need to fix some. I'm grateful for the precious code review.
+TODO: make sure to test that feedContainer has at least a child WITH CLASS .ENTRY
+I need to add this selection, then I can actually test for children.length > 0

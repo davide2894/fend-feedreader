@@ -37,9 +37,8 @@ $(function () {
 			allFeeds.forEach(function (feed) {
 				expect(feed.url).toBeDefined();
 				expect(feed.url).not.toBe('');
-			})
-
-		})
+			});
+		});
 
 
 		/* This tests each feed in allFeeds object to ensure they have a name that is defined
@@ -49,9 +48,8 @@ $(function () {
 			allFeeds.forEach(function (feed) {
 				expect(feed.name).toBeDefined();
 				expect(feed.name).not.toBe('');
-			})
-		})
-
+			});
+		});
 	});
 
 
@@ -66,8 +64,8 @@ $(function () {
 		it('is hidden by default', function () {
 			$(function () {
 				expect(body.hasClass('menu-hidden')).toBe(true);
-			})
-		})
+			});
+		});
 
 		/* This test ensures the menu changes
 		 * visibility when the menu icon is clicked
@@ -90,89 +88,80 @@ $(function () {
 			// Expect menu to hide when clicked again
 			expect(body.hasClass('menu-hidden')).toBe(true);
 
-		})
+		});
 
-	})
+	});
 
 
 	describe('Inital entries', function () {
-
-		var feedContainer = $('.feed');
 
 		// make sure loadFeed loads fully. In other words, that feed entries are loaded
 		beforeEach(function (done) {
 			loadFeed(0, function () {
 				done();
-			})
-		})
+			});
+		});
 
 		/* This test ensures - when the loadFeed
 		 * function is called and completes its work - that there is at least
 		 * a single .entry element within the .feed container.
 		 * Remember, loadFeed() is asynchronous so this test will require
 		 * the use of Jasmine's beforeEach and asynchronous done() function.
+		 * So: to test if there is a single element with class .entry
+		 * we use $(.parent-class .child-class) selector.
+		 * At this point is possible to check 
+		 * if the number of children having this class is greater than 0.
+		 * In other words, that there is at least an element with class .entry
+		 * and that it is also a descendant of .feed (the parent div)
 		 */
 		it('have at least a single entry', function (done) {
-			expect(feedContainer.children.length > 0).toBe(true);
+			expect($('.feed .entry').length > 0).toBe(true);
 			done();
-		})
-	})
+		});
+	});
 
 
 	describe('New Feed Selection', function () {
 
-		var defaultFeedEntry;
-		var newFeedEntry;
+		var feed0,
+			feed1;
 
-		/* This test ensures - when a new feed is loaded
-		 * by the loadFeed function - that the content actually changes.
-		 * Remember, loadFeed() is asynchronous.
+		/* Before running any test, make sure to load 
+		 * the default feed (Udacity blog) 
+		 * and a different one (here we use CSS Tricks).
+		 * We need nested callbacks to make 
+		 * the second feed is loaded only after the first one 
+		 * finished loading
 		 */
 
 		beforeEach(function (done) {
 
-			// Load default feed 
+			// Make sure feed0 is done loading
 			loadFeed(0, function () {
-				// Makes sure new feed is done loading
-				done();
-				// Store first entry url of this feed
-				defaultFeedEntry = $('.feed').find('a').attr('href');
-			})
+				feed0 = $('.feed').html();
+				console.log('feed0 done loading...' + ' ' + feed0);
 
-			// Load new feed 
-			loadFeed(1, function () {
-				// Makes sure new feed is done loading
-				done();
-				// Store first entry url of this feed
-				newFeedEntry = $('.feed').find('a').attr('href');
-			})
+				// Make sure feed1 is done loading
+				loadFeed(1, function () {
 
-		})
+					feed1 = $('.feed').html();
+					console.log('feed1 done loading...' + ' ' + feed1);
 
+					// Here Feed 0 and Feed 1 are done loading, their content has been stored in feed0 and feed1. Test can begin
+					done();
+				});
+			});
+		});
 
 		/* We can safely say that content changed
-		 * if the first entry link of the default feed (Udacity)
-		 * and the one of the new feed (CSS tricks in this case)
-		 * are different.
-		 * Before this spec, I simulated a change of feeds
-		 * (loaded default feed first (Udacity Blog), then a new one (CSS Tricks).
-		 * Here, I use a timeout to make sure loadFeed(0) and loadFeed(1)
-		 * are done loading, hence that defaultFeedEntry and newFeedEntry 
-		 * stored their respective href string successfully
-		 * As a manual test, I used a fake allFeeds[] (you can find it commented in js/app.js)
-		 * where feeds are all the same (Udacity Blog).
-		 * When I use this one, test fails because first entries have the same href.
+		 * if the first feed (Udacity) 
+		 * and the second one (CSS tricks in this case)
+		 * are different (they have different html code).
 		 */
 		it('should change the content', function (done) {
-
-			setTimeout(function () {
-
-				expect(defaultFeedEntry === newFeedEntry).toBe(false);
-				done();
-
-			}, 500);
-
-		})
-	})
+			expect(feed0 === feed1).toBe(false);
+			done();
+		});
+	});
 
 }());
