@@ -29,14 +29,17 @@ $(function () {
 		});
 
 
-		/* This tests each feed in the allFeeds object to ensures they have a defined URL defined
+		/* This tests each feed in the allFeeds object
+		 * to ensures they have a defined URL 
 		 * and that the URL is not empty.
+		 * .tobeTrurhy() makes sure feed.URL is not falsy,
+		 * so that is not 0, "", null, undefined, NaN.
+		 * In other words, we can test that feed.URL is defined and not empty
+		 * just in one line.
 		 */
 		it('have working URLs', function () {
-
 			allFeeds.forEach(function (feed) {
-				expect(feed.url).toBeDefined();
-				expect(feed.url).not.toBe('');
+				expect(feed.url).toBeTruthy();
 			});
 		});
 
@@ -115,7 +118,7 @@ $(function () {
 		 * and that it is also a descendant of .feed (the parent div)
 		 */
 		it('have at least a single entry', function (done) {
-			expect($('.feed .entry').length > 0).toBe(true);
+			expect($('.feed .entry').length).toBeGreaterThan(0);
 			done();
 		});
 	});
@@ -138,14 +141,13 @@ $(function () {
 
 			// Make sure feed0 is done loading
 			loadFeed(0, function () {
+
 				feed0 = $('.feed').html();
-				console.log('feed0 done loading...' + ' ' + feed0);
 
 				// Make sure feed1 is done loading
 				loadFeed(1, function () {
 
 					feed1 = $('.feed').html();
-					console.log('feed1 done loading...' + ' ' + feed1);
 
 					// Here Feed 0 and Feed 1 are done loading, their content has been stored in feed0 and feed1. Test can begin
 					done();
